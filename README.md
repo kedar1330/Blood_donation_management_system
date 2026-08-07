@@ -21,3 +21,62 @@ Blood_Donation_Management_System/
 ├── .gitignore           # Git ignored files
 └── Blood_Donation_DB.sql # MySQL database schema
 ```
+## 🌳 System Hierarchy
+
+```text
+Blood Donation Management System
+│
+├── 👨‍💼 Admin Panel
+│   │
+│   ├── Blood Inventory Management
+│   │   ├── Add Blood Inventory
+│   │   ├── View Blood Inventory
+│   │   ├── Update Blood Inventory
+│   │   └── Delete Blood Inventory
+│   │
+│   ├── Blood Request Management
+│   │   ├── View All Blood Requests
+│   │   ├── Check Blood Inventory
+│   │   ├── Approve Blood Request
+│   │   ├── Update Request Status
+│   │   └── Reject Blood Request
+│   │
+│   ├── Hospital Management
+│   │   ├── Add Hospital
+│   │   ├── View Hospitals
+│   │   ├── Update Hospital
+│   │   └── Delete Hospital
+│   │
+│   ├── Campaign Management
+│   │   ├── Add Campaign
+│   │   ├── View Campaigns
+│   │   ├── Update Campaign
+│   │   ├── Delete Campaign
+│   │   └── View Registered Members
+│   │
+│   ├── Donor Management
+│   │   ├── View Donors
+│   │   ├── Search Donor by Blood Group
+│   │   ├── Update Donor Details
+│   │   └── Delete Donor Record
+│   │
+│   └── Exit
+│
+├── 🧑 User Panel
+│   │
+│   ├── 🩸 Donor
+│   │   ├── Search Campaign
+│   │   └── Register for Campaign
+│   │
+│   └── 🏥 Recipient
+│       ├── Search Blood Group
+│       ├── Pre-book Blood Units
+│       ├── Payment
+│       └── Bill Generation
+│
+└── 🏥 Hospital Panel
+    │
+    ├── Hospital Login
+    ├── Emergency Blood Request
+    └── Logout
+```
