@@ -80,3 +80,54 @@ Blood Donation Management System
     ├── Emergency Blood Request
     └── Logout
 ```
+## 🗄️ Database Tables
+
+- blood_inventory
+- request_management
+- hospital_management
+- donor
+- campaign
+- user_campaign
+## 📦 Installation
+
+1. Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Import the SQL database into MySQL.
+
+4. Update database credentials in `db.py`.
+
+5. Run the project
+
+```bash
+python main.py
+```
+
+---
+
+## 📚 Concepts Used
+
+- Object-Oriented Programming
+- Modular Programming
+- CRUD Operations
+- SQL JOIN
+- Foreign Keys
+- MySQL Connectivity
+- SMTP Email Notifications
+- Menu Driven Programming
+
+---
+# All the best guys!
+
+## 👨‍💻 Developed By
+
+**Kedar V. Marathe(Linkcode Technologies)**
