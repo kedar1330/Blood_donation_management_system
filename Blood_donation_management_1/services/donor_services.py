@@ -1,89 +1,86 @@
-from db import conn, cursor
-
-# VIEW DONORS
-def view_donor():
-
-    query = "SELECT * FROM donor"
-
-    cursor.execute(query)
-    rows = cursor.fetchall()
-
-    print("\nDonor ID\tName\tBlood Group\tGender\tAge\tPhone\tEmail")
-
-    for r in rows:
-        print(r[0], "\t\t", r[1], "\t", r[2], "\t\t", r[3], "\t", r[4], "\t", r[5], "\t", r[6])
+from db import conn,cursor
+from models.donor import *
 
 
-# UPDATE DONOR
-def update_donor():
-
-    donor_id = int(input("Enter Donor ID to Update: "))
-
-    donor_name = input("Enter New Name: ")
-    blood_group = input("Enter New Blood Group: ")
-    gender = input("Enter New Gender: ")
-    age = int(input("Enter New Age: "))
-    phone = input("Enter New Phone Number: ")
-    email = input("Enter New Email: ")
-
-    query = """
-    UPDATE donor
-    SET donor_name=%s,
-        blood_group=%s,
-        gender=%s,
-        age=%s,
-        phone=%s,
-        email=%s
-    WHERE donor_id=%s
-    """
-
-    values = (
-        donor_name,
-        blood_group,
-        gender,
-        age,
-        phone,
-        email,
-        donor_id
-    )
-
-    cursor.execute(query, values)
-    conn.commit()
-
-    print("Donor Updated Successfully")
-
-
-# DELETE DONOR
-def delete_donor():
-
-    donor_id = int(input("Enter Donor ID to Delete: "))
-
-    query = "DELETE FROM donor WHERE donor_id=%s"
-
-    cursor.execute(query, (donor_id,))
-    conn.commit()
-
-    print("Donor Deleted Successfully")
-
-
-# SEARCH DONOR
-def search_donor():
-
-    donor_id = int(input("Enter Donor ID to Search: "))
-
-    query = "SELECT * FROM donor WHERE donor_id=%s"
-
-    cursor.execute(query, (donor_id,))
-    row = cursor.fetchone()
+def search_campaign():
+    campaign_id=int(input("Enter campaign ID to search:"))
+    
+    query="select * from campaign where campaign_id=%s"
+        
+    cursor.execute(query,(campaign_id,))
+    row=cursor.fetchone()
 
     if row:
-        print("\n========== Donor Details ==========")
-        print("Donor ID     :", row[0])
-        print("Name         :", row[1])
-        print("Blood Group  :", row[2])
-        print("Gender       :", row[3])
-        print("Age          :", row[4])
-        print("Phone        :", row[5])
-        print("Email        :", row[6])
+        print("\n-------------campaign found---------------")
+        print("campaign id :",row[0])
+        print("campaign_name :",row[1])
+        print("location :",row[2])
+        print("date :",row[3])
+        print("time : ",row[4])
     else:
-        print("Donor Not Found")
+        print("campaign not found" )
+
+def  user_registration_campaigns():
+
+    # Show Campaigns
+    cursor.execute("SELECT campaign_id, campaign_name FROM campaign")
+    rows = cursor.fetchall()
+
+    print("\nAvailable Campaigns")
+    for row in rows:
+        print(row[0], "-", row[1])
+
+    campaign_id = int(input("Enter Campaign ID: "))
+
+    # Check Campaign ID
+    cursor.execute("SELECT * FROM campaign WHERE campaign_id=%s", (campaign_id,))
+    campaign = cursor.fetchone()
+
+    if campaign is None:
+        print("Invalid Campaign ID")
+        return
+    # donor details
+    donor_name=input("enter donor name:")
+    age=int(input("enter your age :"))
+    gender=input("enter your gender :")
+    blood_group=input("enter your blood group :")
+    phone=int(input("enter your phone number :")) 
+    query="insert into user_campaign(donor_name,age,gender,blood_group,phone)values(%s,%s,%s,%s,%s,%s)"
+    values=(donor_name,age,gender,blood_group,phone)
+    cursor.execute(query,values)
+    conn.commit()
+    print("Successfully Registration complete!")
+
+def login():
+    email=input("enter your email :")
+    password=input("enter your password :")
+    query="select * from donor where email=%s and password=%s"
+    cursor.execute(query,(email,password))
+    result=cursor.fetchone()
+    if result:
+        print("login successfully!")
+        return True
+    else:
+        print("invalid email and password!.please try again!")
+        return False
+
+def registration():    
+    donor_name=input("enter donor name:")
+    age=int(input("enter your age :"))
+    gender=input("enter your gender :")
+    email=input("enter your email :")
+    password=input("enter your password :")
+    blood_group=input("enter your blood group :")
+    phone=int(input("enter your phone number :"))
+    donor_obj=donor(donor_name,age,gender,email,password,blood_group,phone)
+    query="insert into donor(donor_name,age,gender,email,password,blood_group,phone)values(%s,%s,%s,%s,%s,%s,%s)"
+    values=(donor_obj.donor_name,donor_obj.age,donor_obj.gender,donor_obj.email,donor_obj.password,donor_obj.blood_group,donor_obj.phone)
+    cursor.execute(query,values)
+    conn.commit()
+    print("Successfully Registration complete!")
+
+
+
+
+
+ 
