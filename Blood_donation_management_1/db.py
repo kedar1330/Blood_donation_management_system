@@ -3,3 +3,4 @@ conn=mysql.connector.connect(host="localhost",user="root",password="Kedar1234#",
 print("Connection established")
 cursor=conn.cursor()
 print("Cursor established")
+print("Done")
