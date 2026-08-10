@@ -1,5 +1,5 @@
 from db import conn,cursor
-from models.campaign_m import Campaign
+from models.campaign import Campaign
 
 #ADD CAMPAIGN
 def add_campaign():
@@ -80,72 +80,25 @@ def search_campaign():
     else:
         print("Campaign not found")
         
-#VIEW REGISTRATION COUNT
-def view_registration_count():
+
+def view_registered_members_for_campaign():
 
     query = """
     SELECT
-        c.campaign_id,
-        c.campaign_name,
-        COUNT(cr.donor_id) AS total_members
-    FROM campaign c
-    LEFT JOIN campaign_registration cr
-        ON c.campaign_id = cr.campaign_id
-    GROUP BY c.campaign_id, c.campaign_name
-    ORDER BY c.campaign_id
+        id,
+        campaign_id,
+        donor_name,
+        age,
+        gender,
+        blood_group,
+        phone
+    FROM user_campaign
+    ORDER BY campaign_id, donor_name
     """
 
     cursor.execute(query)
+
     rows = cursor.fetchall()
 
-    print("\nCampaign ID\tCampaign Name\tRegistered Members")
-    print("--------------------------------------------------------")
-
-    for row in rows:
-        print(row[0], "\t\t", row[1], "\t\t", row[2])
-
-#VIEW REGISTERED MEMBERS
-def view_registered_members():
-
-    campaign_id = int(input("Enter Campaign ID: "))
-
-    query = """
-    SELECT
-        d.donor_id,
-        d.donor_name,
-        d.blood_group,
-        d.gender,
-        d.age,
-        d.phone,
-        d.email,
-        cr.registration_date
-    FROM campaign_registration cr
-    INNER JOIN donor d
-        ON cr.donor_id = d.donor_id
-    WHERE cr.campaign_id = %s
-    """
-
-    cursor.execute(query, (campaign_id,))
-    rows = cursor.fetchall()
-
-    if rows:
-
-        print("\n================ Registered Members ================")
-        print("ID\tName\tBlood\tGender\tAge\tPhone\t\tEmail\t\t\tRegistered On")
-
-        for row in rows:
-            print(
-                row[0], "\t",
-                row[1], "\t",
-                row[2], "\t",
-                row[3], "\t",
-                row[4], "\t",
-                row[5], "\t",
-                row[6], "\t",
-                row[7]
-            )
-
-    else:
-        print("No members registered for this campaign.")        
-
+    return rows
     

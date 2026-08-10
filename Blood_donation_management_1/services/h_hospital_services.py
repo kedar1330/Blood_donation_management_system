@@ -52,3 +52,41 @@ def emergency_blood_request(hospital_id,
     conn.commit()
 
     print("\nEmergency Blood Request Submitted Successfully.")
+
+def view_status(hospital_id):
+
+    query = """
+    SELECT
+        req_id,
+        blood_group,
+        units_required,
+        request_date,
+        R_status,
+        remarks,
+        admin_response
+    FROM request_management
+    WHERE Hospital_id=%s
+    ORDER BY request_date DESC
+    """
+
+    cursor.execute(query, (hospital_id,))
+
+    rows = cursor.fetchall()
+
+    if not rows:
+        print("\nNo blood requests found.")
+        return
+
+    print("\n========== MY BLOOD REQUESTS ==========")
+
+    for row in rows:
+
+        print("\nRequest ID      :", row[0])
+        print("Blood Group     :", row[1])
+        print("Units Required  :", row[2])
+        print("Request Date    :", row[3])
+        print("Status          :", row[4])
+        print("Your Remarks    :", row[5])
+        print("Admin Response  :", row[6])
+
+        print("----------------------------------------")

@@ -1,5 +1,5 @@
 from admin import admin_menu
-from menus.h_hospital_menu import h_hospital_menu
+from menus.h_hospital_menu import *
 from hospital import *
 from user import *
 def main():

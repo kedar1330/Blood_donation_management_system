@@ -15,6 +15,10 @@ def blood_request_management_menu():
 
         choice = input("Enter your choice: ")
 
+        # ==========================================
+        # 1. View All Blood Requests
+        # ==========================================
+
         if choice == "1":
 
             request_list = view_all_requests()
@@ -30,6 +34,10 @@ def blood_request_management_menu():
             else:
 
                 print("No Blood Requests Found.")
+
+        # ==========================================
+        # 2. Check Blood Inventory
+        # ==========================================
 
         elif choice == "2":
 
@@ -48,24 +56,57 @@ def blood_request_management_menu():
 
                 print("Blood Inventory is Empty.")
 
+        # ==========================================
+        # 3. Approve Blood Request
+        # ==========================================
+
         elif choice == "3":
 
-            req_id = int(input("Enter Request ID to Approve: "))
+            req_id = int(
+                input("Enter Request ID to Approve: ")
+            )
 
             approve_request(req_id)
 
+        # ==========================================
+        # 4. Update Request Status
+        # ==========================================
+
         elif choice == "4":
 
-            req_id = int(input("Enter Request ID: "))
-            status = input("Enter New Status (Pending/Approved/Rejected): ")
+            req_id = int(
+                input("Enter Request ID: ")
+            )
 
-            update_request_status(req_id, status)
+            status = input(
+                "Enter New Status (Pending/Approved/Rejected): "
+            )
+
+            admin_response = input(
+                "Enter Admin Response: "
+            )
+
+            update_request_status(
+                req_id,
+                status,
+                admin_response
+            )
+
+        # ==========================================
+        # 5. Reject Blood Request
+        # ==========================================
 
         elif choice == "5":
 
-            req_id = int(input("Enter Request ID to Reject: "))
+            req_id = int(
+                input("Enter Request ID to Reject: ")
+            )
 
             reject_request(req_id)
+
+        # ==========================================
+        # 6. Back
+        # ==========================================
 
         elif choice == "6":
 

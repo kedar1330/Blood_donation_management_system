@@ -5,156 +5,154 @@ from db import conn, cursor
 from models.payment import Payment
 
 
-while True:
+def recipient_menu():
 
-    try:
+    while True:
 
-        ch = int(input("""
-        ========== Recipient ==========
-        
-        1. Search Blood Group
-        2. Pre Book
-        3. Payment
-        4. Generate Bill
-        5. View Reports
-        6. Back
-        
-        Enter Choice :
-        """))
+        try:
 
-    except ValueError:
+            ch = int(input("""
+========== Recipient ==========
 
-        print("\nPlease enter a valid number.")
-        continue
+1. Search Blood Group
+2. Pre Book
+3. Payment
+4. Generate Bill
+5. View Reports
+6. Back
 
+Enter Choice :
+"""))
 
-    match ch:
+        except ValueError:
 
-        # ==================================================
-        # SEARCH BLOOD GROUP
-        # ==================================================
+            print("\nPlease enter a valid number.")
+            continue
 
-        case 1:
+        match ch:
 
-            search_blood_group()
+            # ==========================================
+            # SEARCH BLOOD GROUP
+            # ==========================================
 
+            case 1:
 
-        # ==================================================
-        # PRE BOOK
-        # ==================================================
-
-        case 2:
-
-            pre_book()
+                search_blood_group()
 
 
-        # ==================================================
-        # PAYMENT
-        # ==================================================
+            # ==========================================
+            # PRE BOOK
+            # ==========================================
 
-        case 3:
+            case 2:
 
-            payment = make_payment()
+                pre_book()
 
 
-        # ==================================================
-        # GENERATE BILL
-        # ==================================================
+            # ==========================================
+            # PAYMENT
+            # ==========================================
 
-        case 4:
+            case 3:
 
-            try:
+                payment = make_payment()
 
-                booking_id = int(
-                    input("Enter Booking ID : ")
+
+            # ==========================================
+            # GENERATE BILL
+            # ==========================================
+
+            case 4:
+
+                try:
+
+                    booking_id = int(
+                        input("Enter Booking ID : ")
+                    )
+
+                except ValueError:
+
+                    print("\nInvalid Booking ID!")
+                    continue
+
+
+                query = """
+                SELECT
+                    booking_id,
+                    recipient_name,
+                    amount,
+                    payment_method,
+                    payment_status
+                FROM payment
+                WHERE booking_id = %s
+                """
+
+                cursor.execute(
+                    query,
+                    (booking_id,)
                 )
 
-            except ValueError:
-
-                print("\nInvalid Booking ID!")
-                continue
+                row = cursor.fetchone()
 
 
-            query = """
-            SELECT
-                booking_id,
-                recipient_name,
-                amount,
-                payment_method,
-                payment_status
-            FROM payment
-            WHERE booking_id = %s
-            """
+                if row:
 
-            cursor.execute(
-                query,
-                (booking_id,)
-            )
+                    payment = Payment(
+                        row[0],
+                        row[1],
+                        row[2],
+                        row[3],
+                        row[4]
+                    )
 
-            row = cursor.fetchone()
+                    generate_bill(payment)
 
+                else:
 
-            if row:
-
-                payment = Payment(
-                    row[0],
-                    row[1],
-                    row[2],
-                    row[3],
-                    row[4]
-                )
-
-                generate_bill(payment)
-
-            else:
-
-                print(
-                    "\nPlease make payment first."
-                )
+                    print(
+                        "\nPlease make payment first."
+                    )
 
 
-        # ==================================================
-        # VIEW REPORTS
-        # ==================================================
+            # ==========================================
+            # VIEW REPORTS
+            # ==========================================
 
-        case 5:
+            case 5:
 
-            view_reports()
-
-
-        # ==================================================
-        # BACK
-        # ==================================================
-
-        case 6:
-
-            choice = input(
-                "\nAre you sure you want to go back? (yes/no): "
-            ).lower().strip()
+                view_reports()
 
 
-            if choice == "yes":
+            # ==========================================
+            # BACK
+            # ==========================================
 
-                break
+            case 6:
+
+                choice = input(
+                    "\nAre you sure you want to go back? (yes/no): "
+                ).lower().strip()
+
+                if choice == "yes":
+
+                    break
+
+                elif choice == "no":
+
+                    continue
+
+                else:
+
+                    print(
+                        "Invalid input. "
+                        "Please enter 'yes' or 'no'."
+                    )
 
 
-            elif choice == "no":
+            # ==========================================
+            # INVALID CHOICE
+            # ==========================================
 
-                continue
+            case _:
 
-
-            else:
-
-                print(
-                    "Invalid input. "
-                    "Please enter 'yes' or 'no'."
-                )
-
-
-        # ==================================================
-        # INVALID CHOICE
-        # ==================================================
-
-        case _:
-
-            print("\nInvalid Choice!")
+                print("\nInvalid Choice!")

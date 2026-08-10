@@ -1,9 +1,10 @@
 from services.donor_services import login, registration
 from menus.donor_menu import donor_menu
+from menus.recipient_menu import recipient_menu
 
 
 def user_panel():
- 
+
     while True:
 
         print("\n===== Blood Donation Management System =====")
@@ -11,20 +12,36 @@ def user_panel():
         print("2. Recipient")
         print("3. Exit")
 
-        choice = int(input("Enter your choice: "))
+        try:
+            choice = int(input("Enter your choice: "))
+
+        except ValueError:
+            print("Please enter a valid number.")
+            continue
 
         match choice:
+
+            # ==========================================
+            # DONOR
+            # ==========================================
 
             case 1:
 
                 while True:
 
-                    print("\n====Donor Menu ====")
+                    print("\n==== Donor Menu ====")
                     print("1. Registration")
                     print("2. Login")
-                    print("3. Exit")
+                    print("3. Back")
 
-                    choice = int(input("Enter your choice: "))
+                    try:
+                        choice = int(
+                            input("Enter your choice: ")
+                        )
+
+                    except ValueError:
+                        print("Please enter a valid number.")
+                        continue
 
                     match choice:
 
@@ -32,6 +49,7 @@ def user_panel():
                             registration()
 
                         case 2:
+
                             status = login()
 
                             if status:
@@ -41,14 +59,35 @@ def user_panel():
                             break
 
                         case _:
-                            print("Invalid choice")
+                            print("Invalid choice.")
+
+
+            # ==========================================
+            # RECIPIENT
+            # ==========================================
 
             case 2:
-                print("Recipient Panel")
+
+                recipient_menu()
+
+
+            # ==========================================
+            # EXIT USER PANEL
+            # ==========================================
 
             case 3:
-                print("Thank You!")
+
+                print("\nThank You!")
                 break
 
+
+            # ==========================================
+            # INVALID CHOICE
+            # ==========================================
+
             case _:
-                print("Invalid Choice! Please enter a number between 1 and 3.")
+
+                print(
+                    "Invalid Choice! "
+                    "Please enter a number between 1 and 3."
+                )
